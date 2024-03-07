@@ -1,58 +1,141 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
-        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-        <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Simple AR with Three.js and WebXR</title>
+        <style>
+            body {
+                margin: 0;
+            }
+            canvas {
+                display: block;
+            }
+        </style>
     </head>
+    <body>
+        <script type="module" crossorigin="anonymous" src="https://threejs.org/build/three.module.js"></script>
+        <script type="module" crossorigin="anonymous" src="https://threejs.org/examples/jsm/webxr/ARButton.js"></script>
+        <script type="module" crossorigin="anonymous">
+            import * as THREE from "https://threejs.org/build/three.module.js";
+            import { ARButton } from "https://threejs.org/examples/jsm/webxr/ARButton.js";
+            var scene, camera, renderer, cube;
 
-    <body style="margin: 0; overflow: hidden;">
-        <a-scene
-            renderer="logarithmicDepthBuffer: true;"
-            embedded
-            loading-screen="enabled: false;"
-            arjs="sourceType: webcam; debugUIEnabled: false;"
-        >
-            <a-assets>
-                <a-asset-item
-                    id="animated-asset"
-                    src="assets/asset.glb"
-                ></a-asset-item>
-            </a-assets>
+            init();
+            animate();
 
-                <a-entity
-                    look-at="[gps-camera]"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    scale="0.1355811648764973 0.1355811648764973 0.1355811648764973"
-                    gps-entity-place="latitude: 10.902814514322525; longitude: 76.90534796091555;"
-                ></a-entity>
-                <a-entity
-                    look-at="[gps-camera]"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    scale="0.1355811648764973 0.1355811648764973 0.1355811648764973"
-                    gps-entity-place="latitude: 10.902776277373928; longitude: 76.90530865453185;"
-                ></a-entity>
-                <a-entity
-                    look-at="[gps-camera]"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    scale="0.1355811648764973 0.1355811648764973 0.1355811648764973"
-                    gps-entity-place="latitude: 10.90274993943344; longitude: 76.90534084104003;"
-                ></a-entity>
-                <a-entity
-                    look-at="[gps-camera]"
-                    animation-mixer="loop: repeat"
-                    gltf-model="#animated-asset"
-                    scale="0.1355811648764973 0.1355811648764973 0.1355811648764973"
-                    gps-entity-place="latitude: 10.902707798723805; longitude: 76.90534620545806;"
-                ></a-entity>
+            function init() {
+                scene = new THREE.Scene();
 
-            <a-camera gps-camera rotation-reader></a-camera>
-        </a-scene>
+                camera = new THREE.PerspectiveCamera(
+                    70,
+                    window.innerWidth / window.innerHeight,
+                    0.01,
+                    20
+                );
+
+                var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+                var material = new THREE.MeshNormalMaterial();
+                cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.xr.enabled = true;
+                document.body.appendChild(renderer.domElement);
+
+                document.body.appendChild(
+                    ARButton.createButton(renderer, {
+                        requiredFeatures: ["hit-test"],
+                    })
+                );
+
+                window.addEventListener("resize", onWindowResize, false);
+            }
+
+            function animate() {
+                renderer.setAnimationLoop(function () {
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                });
+            }
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        </script>
     </body>
+</html>
+<html lang="en">
+  <head>
+    <title>Simple AR with Three.js and WebXR</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module" crossorigin="anonymous" src="https://threejs.org/build/three.module.js"></script>
+    <script type="module" crossorigin="anonymous" src="https://threejs.org/examples/jsm/webxr/ARButton.js"></script>
+    <script type="module" crossorigin="anonymous">
+      import * as THREE from "https://threejs.org/build/three.module.js";
+      import { ARButton } from "https://threejs.org/examples/jsm/webxr/ARButton.js";
+      var scene, camera, renderer, cube;
+
+      init();
+      animate();
+
+      function init() {
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(
+          70,
+          window.innerWidth / window.innerHeight,
+          0.01,
+          20
+        );
+
+        var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+        var material = new THREE.MeshNormalMaterial();
+        cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.xr.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        document.body.appendChild(
+          ARButton.createButton(renderer, {
+            requiredFeatures: ["hit-test"],
+          })
+        );
+
+        window.addEventListener("resize", onWindowResize, false);
+      }
+
+      function animate() {
+        renderer.setAnimationLoop(function () {
+          cube.rotation.x += 0.01;
+          cube.rotation.y += 0.01;
+          renderer.render(scene, camera);
+        });
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    </script>
+  </body>
 </html>
