@@ -45,11 +45,14 @@
                 renderer.xr.enabled = true;
                 document.body.appendChild(renderer.domElement);
 
-                document.body.appendChild(
-                    ARButton.createButton(renderer, {
-                        requiredFeatures: ["hit-test"],
-                    })
-                );
+                // Enable AR Quick Look by adding an anchor
+                var arButton = ARButton.createButton(renderer, {
+                    requiredFeatures: ["hit-test"],
+                    // Add anchor for AR Quick Look
+                    optionalFeatures: ["dom-overlay"],
+                });
+
+                document.body.appendChild(arButton);
 
                 window.addEventListener("resize", onWindowResize, false);
             }
@@ -114,11 +117,14 @@
         renderer.xr.enabled = true;
         document.body.appendChild(renderer.domElement);
 
-        document.body.appendChild(
-          ARButton.createButton(renderer, {
-            requiredFeatures: ["hit-test"],
-          })
-        );
+        // Enable AR Quick Look by adding an anchor
+        var arButton = ARButton.createButton(renderer, {
+          requiredFeatures: ["hit-test"],
+          // Add anchor for AR Quick Look
+          optionalFeatures: ["dom-overlay"],
+        });
+
+        document.body.appendChild(arButton);
 
         window.addEventListener("resize", onWindowResize, false);
       }
