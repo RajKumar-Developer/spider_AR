@@ -37,7 +37,7 @@ var ArMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 scene.visible = false;
 
 
-const geometry = new THREE.CubeGeomentry( 1, 1, 1 );
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 const material = new THREE.MeshNormalMaterial( { 
     transparent: true,
     opacity: 0.5,
